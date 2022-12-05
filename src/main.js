@@ -10,7 +10,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.prototype.$axios=axios
 Vue.config.productionTip = false
-
+abc
 new Vue({
   router,
   store,
