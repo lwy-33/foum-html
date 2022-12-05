@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    xzw
+    lwybhjtretrebj
     <router-view/>
   </div>
 </template>
-
+fsdf
 <style>
-大部分都是方式
+
 </style>
