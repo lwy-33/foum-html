@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    lwy
+    lwybhjbj
     <router-view/>
   </div>
 </template>
