@@ -35,7 +35,7 @@ export default {
       this.$router.push({path:'/Register'})
     },
     Login(){
-      this.$axios.post('http://localhost:8089/user/PasswordVerification',this.Loginform).then(res=>{
+      this.$axios.post('http://localhost:8090/user/PasswordVerification',this.Loginform).then(res=>{
         this.Loginform=res.data.dataObject;
         alert(this.Loginform.password=='0')
         console.log(this.Loginform)

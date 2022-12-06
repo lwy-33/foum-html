@@ -1,59 +1,84 @@
 <template>
   <div>
     <el-table
-        :data="tableData"
+        :data="userList"
         style="width: 100%">
       <el-table-column
           label="用户编号"
-          prop="date"
+          prop="userId"
           width="120">
       </el-table-column>
       <el-table-column
           label="头像"
-          prop="name"
+          prop="userImage"
           width="120">
       </el-table-column>
       <el-table-column
           label="用户名"
-          prop="address"
+          prop="username"
           width="120">
       </el-table-column>
       <el-table-column
           label="密码"
-          prop="address"
+          prop="password"
           width="120">
       </el-table-column>
       <el-table-column
           label="性别"
-          prop="address"
+          prop="sex"
           width="120">
       </el-table-column>
       <el-table-column
           label="电子邮件"
-          prop="address"
+          prop="email"
           width="120">
       </el-table-column>
       <el-table-column
           label="角色"
-          prop="address"
+          prop="roleId"
           width="120">
       </el-table-column>
       <el-table-column
           label="昵称"
-          prop="address"
+          prop="nickname"
           width="120">
       </el-table-column>
       <el-table-column
           label="个人简介"
-          prop="address"
+          prop="personal"
           width="120">
       </el-table-column>
       <el-table-column
           label="被访问次数"
-          prop="address"
+          prop="bebrowseCount"
           width="120">
       </el-table-column>
+
+
     </el-table>
+
+<!--    <div class="block">-->
+<!--      <el-pagination-->
+<!--          @size-change="handleSizeChange"-->
+<!--          @current-change="handleCurrentChange"-->
+<!--          :current-page=curPage-->
+<!--          :page-sizes="[2, 5, 10, 15]"-->
+<!--          :page-size= pageSize-->
+<!--          layout="total, sizes, prev, pager, next, jumper"-->
+<!--          :total = total>-->
+<!--      </el-pagination>-->
+<!--    </div>-->
+    <div class="block">
+      <el-pagination
+          :current-page="curPage"
+          :page-size="pageSize"
+          :page-sizes="[2, 5, 10, 15]"
+          :total="total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -62,24 +87,38 @@ export default {
   name: "UserManager",
   data() {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      userList:[],
+      curPage:1,
+      pageSize:5,
+      total: 0
     }
+  },
+  methods:{
+    getAllUserByPage(){
+      this.$axios.get("http://localhost:8090/user/getAllUserByPage?curPage="+this.curPage+"&pageSize="+this.pageSize).then(res=>{
+        this.userList = res.data.dataobject;
+        console.log(this.total)
+      }).catch(err=>console.log(err));
+    },
+    getAllCount(){
+      this.$axios.get("http://localhost:8090/user/getAllCount").then(res=>{
+        this.total = res.data.dataobject;
+        console.log(this.total)
+        console.log(res.data.dataobject)
+      }).catch(err=>console.log(err));
+    },
+    handleSizeChange(val) {
+      this.pageSize=val;
+      this.getAllUserByPage()
+    },
+    handleCurrentChange(val) {
+      this.curPage=val;
+      this.getAllUserByPage()
+    }
+  },
+  created() {
+    this.getAllUserByPage()
+    this.getAllCount()
   }
 }
 </script>
