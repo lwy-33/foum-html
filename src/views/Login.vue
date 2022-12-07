@@ -36,7 +36,7 @@ export default {
     },
     Login(){
       this.$axios.post('http://localhost:8090/user/PasswordVerification',this.Loginform).then(res=>{
-        this.Loginform=res.data.dataObject;
+        this.Loginform=res.data.dataobject;
         alert(this.Loginform.password=='0')
         console.log(this.Loginform)
         if(this.Loginform.password==0){
