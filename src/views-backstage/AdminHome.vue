@@ -91,7 +91,6 @@
               <el-menu-item index="6-2">发布通知</el-menu-item>
             </el-submenu>
             <el-menu-item><i class="el-icon-star-on"></i>收藏夹</el-menu-item>
-            <el-menu-item><i class="el-icon-setting"></i>系统</el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
