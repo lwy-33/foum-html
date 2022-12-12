@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from "@/views/Home";
-import Login from "@/views/Login";
-import Register from "@/views/Register";
-import AdminHome from "@/views/AdminHome";
-import UserManager from "@/views/UserManager";
-import AdminManager from "@/views/AdminManager";
+import Home from "@/views-reception/Home";
+import Login from "@/views-backstage/Login";
+import Register from "@/views-backstage/Register";
+import AdminHome from "@/views-backstage/AdminHome";
+import UserManager from "@/views-backstage/UserManager";
+import AdminManager from "@/views-backstage/AdminManager";
+import AddUser from "@/views-backstage/AddUser";
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,11 @@ const routes = [
         path: '/adminManager',
         name: 'AdminManager',
         component: AdminManager
+      },
+      {
+        path: '/addUser',
+        name: 'AddUser',
+        component: AddUser
       }
     ]
 
