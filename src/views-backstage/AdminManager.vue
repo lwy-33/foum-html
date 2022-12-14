@@ -4,6 +4,8 @@
       <el-button round type="primary" @click="showAddDialog"><i class="el-icon-circle-plus-outline"></i> 添加</el-button>
       <el-table
           :data="userList"
+          :cell-style="rowStyle"
+          :header-cell-style="headStyle"
           style="width: 100%">
         <el-table-column
             label="用户编号"
@@ -370,6 +372,12 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isPNG && isLt2M;
+    },
+    headStyle(){
+      return "text-align:center"
+    },
+    rowStyle(){
+      return "text-align:center"
     }
   },
   created() {

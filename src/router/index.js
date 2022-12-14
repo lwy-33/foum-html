@@ -7,6 +7,8 @@ import AdminHome from "@/views-backstage/AdminHome";
 import UserManager from "@/views-backstage/UserManager";
 import AdminManager from "@/views-backstage/AdminManager";
 import AddUser from "@/views-backstage/AddUser";
+import GameType from "@/views-backstage/GameType";
+import Game from "@/views-backstage/Game";
 
 Vue.use(VueRouter)
 
@@ -50,6 +52,16 @@ const routes = [
         path: '/addUser',
         name: 'AddUser',
         component: AddUser
+      },
+      {
+        path: '/gameType',
+        name: 'GameType',
+        component: GameType
+      },
+      {
+        path:'/game',
+        name:'Game',
+        component: Game
       }
     ]
 
