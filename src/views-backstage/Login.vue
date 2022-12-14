@@ -15,11 +15,13 @@
         <el-button style="width:48%;border: none;float: left" type="primary" @click="Login">登录</el-button>
         <el-button style="width:48%;border: none;float: right" type="primary" @click="Reset">重置</el-button>
       </el-form-item>
+      <p>{{Loginform}}</p>
     </el-form>
   </div>
 </template>
 
 <script>
+
 export default {
   name: "Login",
   data() {
@@ -37,25 +39,45 @@ export default {
     Login(){
       this.$axios.post('http://localhost:8090/user/PasswordVerification',this.Loginform).then(res=>{
         this.Loginform=res.data.dataobject;
-        alert(this.Loginform.password=='0')
-        console.log(this.Loginform)
-        if(this.Loginform.password==0){
-          this.$router.push({name:'AdminHome'})
+        // alert(this.Loginform.password=='0')
+        // console.log(this.Loginform)
+
+        if(res.data.code==200){
+          console.log(this.Loginform)
+          window.localStorage.setItem("userId",this.Loginform.userId);
+          window.localStorage.setItem("token",res.data.token);
+          window.localStorage.setItem("nickname",this.Loginform.nickname);
+          window.localStorage.setItem("userImage",this.Loginform.userImage);
+          window.localStorage.setItem("personal",this.Loginform.personal);
+          if(this.Loginform.roleId>2){
+            this.$router.push({name:'Home'})
+            this.$message({
+              message:"登陆成功!",
+              type:'success'
+            })
+          }else{
+            this.$router.push({name:'AdminHome'})
+            this.$message({
+              message:"登陆成功，欢迎来到后台管理系统",
+              type:'success'
+            })
+          }
+
+
+        }else{ if(res.data.code==300) {
           this.$message({
-            message:"登陆成功，欢迎来到后台管理系统",
-            type:'success'
+            message: "密码错误!",
+            type: 'success'
           })
 
-        }else{
-          this.$message({
-            message:"密码错误，进不去后台管理系统",
-            type:'success'
-          })
+          window.location.reload();
+        }
         }
 
       }).catch(err=>{
         console.log(err);
       });
+
     },
     Reset(){
       this.Loginform.username=''

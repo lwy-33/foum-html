@@ -7,6 +7,7 @@ import AdminHome from "@/views-backstage/AdminHome";
 import UserManager from "@/views-backstage/UserManager";
 import AdminManager from "@/views-backstage/AdminManager";
 import AddUser from "@/views-backstage/AddUser";
+import Test from "@/VueComponent/thumsVue";
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,11 @@ VueRouter.prototype.push = function push(location) {
 }
 
 const routes = [
+  {
+    path: '/test',
+    name:'Tset',
+    component: Test
+  },
   {
     path:'/home',
     name:'Home',
