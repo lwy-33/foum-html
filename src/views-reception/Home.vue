@@ -1,3 +1,4 @@
+<script src="../js/drawer-drag.js"></script>
 <template>
   <div>
     <el-row :gutter="10">
@@ -88,15 +89,15 @@
 
                     <el-card class="box-card">
                       <el-row :gutter="10">
-                        <el-col :span="6"><div  class="grid-content bg-purple" style="height: 80px;background-color: red">
-                          <div  @mouseenter="titleOnEnterTd(index)" @mouseleave="titleOnLeaveTd(index)">
+                        <el-col :span="6"><div  class="grid-content bg-purple" style="height: 80px">
+                          <i @click="titleOnEnterTd(index)">
                             <!--                          帖子用户头像-->
-                            <img class="circleImg1" :src="require('D://userImage//userImage//'+p.user.userImage+'.png')" alt="">
+                            <img class="circleImg1" :src="require('D://userImage//userImage//'+p.user.userImage+'.png')" alt=""></i>
                             <a v-show="p.whetherToPayAttention" style="margin-bottom: 0px"><img style="margin-bottom: -9px;border-radius: 5px;
                               width: 20px;height: 20px;margin-left: -30px;" src="./../images/+.png" ></a>
                             <p style="margin-bottom: 0px">{{p.user.nickname}}</p>
-                            <p style="margin-bottom: 0px">{{p.title.releaseTime}}</p>
-                          </div>
+                            <p style="margin-bottom: 0px;color: #8c939d;font-size: 10px">{{p.title.releaseTime}}</p>
+
                         </div></el-col>
                         <el-col :span="18"><div class="grid-content bg-purple" style="position: relative">
                           <div style="position:absolute; z-index:1;">
@@ -105,7 +106,7 @@
                           <div style="position:absolute;top: 10px;z-index:2;">
                             <PersonalInformationVue
                                 :queryUserId="p.title.userId"
-                                v-show="showUser[index]"
+                                v-show="p.user.by2"
                                 ></PersonalInformationVue>
                           </div>
 <!--                          <div v-show="" style="z-index:2;height: 80px;width: 80px;background-color: white;position: absolute">-->
@@ -120,12 +121,13 @@
                       <p class="dzplC">{{p.by3}}</p>
 <!--                      <a v-show="p.whetherToCollect" style="float: right" ><img class="dzpl" src="./../images/couect.png"></a>-->
 <!--                      <a v-show="!p.whetherToCollect" style="float: right"><img class="dzpl" src="./../images/noCouect.png"></a>-->
+
                       <a @click="couect(p.title.titleId,p.whetherToCollect,index)"><CouectVue
                           :state="p.whetherToCollect==1"
                           style="float: right"></CouectVue></a>
                       <!--                      评论-->
                       <p class="dzplC">{{p.title.commentCount}}</p>
-                      <a @click="drawer = true" style="float: right"><img class="dzpl" src="./../images/comment.png"></a>
+                      <a @click="comment(p.title.titleId,0,p.user.nickname)" style="float: right"><img class="dzpl" src="./../images/comment.png"></a>
                       <!--                      点赞-->
                       <p class="dzplC">{{p.title.thumbsCount}}</p>
                       <a @click="thums(p.title.titleId,p.likeOrNot,index)"><ThumsVue
@@ -180,10 +182,17 @@
       </el-col>
     </el-row>
     <el-drawer
-        title="我是标题"
+        title="评论"
+        v-drawer-drag
         :visible.sync="drawer"
-        :with-header="false">
-      <span>我来啦!</span>
+        :with-header="false"
+        :destroy-on-close="true"
+        size="50%">
+      <CommentVue
+        :becommentId=commentId
+        :becommentTypeId="commentTypeId"
+        :nickname="commentNickName"
+        :destroy-on-close="true"></CommentVue>
     </el-drawer>
   </div>
 </template>
@@ -195,13 +204,17 @@ import ThumsVue from "@/VueComponent/thumsVue";
 import couectVue from "@/VueComponent/couectVue";
 import CouectVue from "@/VueComponent/couectVue";
 import PersonalInformationVue from "@/VueComponent/personalInformationVue";
+import CommentVue from "@/VueComponent/commentVue";
 export default {
 
   name: "Home",
-  components: {PersonalInformationVue, CouectVue, ThumsVue},
+  components: {CommentVue, PersonalInformationVue, CouectVue, ThumsVue},
   data(){
     return{
-      showUser:[],
+      commentNickName:'',
+      commentId:'',
+      commentTypeId: '',
+      commentList:[],
       drawer: false,
       thumbs:{},
       token:'',
@@ -248,19 +261,24 @@ export default {
     })
   },
   methods: {
-    titleOnLeaveTd(index){
-//鼠标离开titleUserId的事件。
-      this.showUser[index]=false;
-      alert("离开"+index+this.showUser[index])
+    comment(titleId,typeId,nickName){
+      this.commentNickName=nickName
+      this.commentId=titleId;
+      this.commentTypeId= typeId;
+      // alert(this.commentId+"  "+this.commentTypeId)
+      this.drawer = true
     },
+
     titleOnEnterTd(index){
 //鼠标进入titleUserId的事件。
+      this.titleList[index].user.by2=!this.titleList[index].user.by2;
 
-      this.showUser[index]=true;
-      alert("进入"+index+this.showUser[index])
+
+      // alert("进入"+index+this.showUser[index])
+      // console.log(this.showUser)
     },
     couect(titleId,whetherToCollect,index){
-      //          当前登录用户                帖子id            0约定为点赞类型为帖子
+      //          当前登录用户                帖子id
       // alert(titleId+"    "+this.titleList[index].likeOrNot+"   "+index)
       if(whetherToCollect==0||whetherToCollect==null){
         this.titleList[index].whetherToCollect=1;
@@ -312,7 +330,7 @@ export default {
       }).catch(err=>console.log("读取帖子出错"+err))
     },
     loadingGame(){
-      this.$axios.get("http://localhost:8090/show/showAllGame").then(res=>{
+      this.$axios.get("http://localhost:8090/game/findAllGame").then(res=>{
         this.games=res.data.dataobject;
         console.log("游戏：")
         console.log(this.games)
@@ -328,6 +346,10 @@ export default {
     loadingTitle(){
       this.$axios.get("http://localhost:8090/show/showTitles?userId="+this.user.userId+"&gameId="+1).then(res=>{
         this.titleList=res.data.dataobject;
+        for(var i=0;i<this.titleList.length;i++){
+          this.titleList[i].user.by2=false
+        }
+
         console.log("帖子：---------------------------------")
         console.log(this.titleList)
       }).catch(err=>console.log("读取帖子出错"+err))

@@ -27,11 +27,12 @@ export default {
   data(){
     return{
       user:{},
+
     }
   },
   props:{
     queryUserId:{
-      type:Int16Array,
+      type:Number,
     }
   },
   created() {
@@ -48,6 +49,7 @@ export default {
 </script>
 
 <style scoped>
+
 .app{
   /*z-index:2;*/
   height: 80px;

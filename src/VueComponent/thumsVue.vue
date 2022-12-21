@@ -50,8 +50,8 @@ export default {
   cursor: pointer;
   box-shadow: 0px 0px 0px 0px rgba(223, 46, 58, 0.5);
   .img-box {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     margin: 5px;
     -moz-user-select: none;
     -webkit-user-select: none;
