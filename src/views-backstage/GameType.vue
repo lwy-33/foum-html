@@ -43,11 +43,11 @@
         :visible.sync="dialogVisible"
         title="提示"
         width="30%">
-      <el-form label-width="80px">
+      <el-form ref="gametypeForm" :model="gametype" :rules="rules" label-width="80px">
         <el-form-item label="游戏类型编号">
           <el-input v-model="gametype.typeId" disabled="" placeholder="游戏类型编号"></el-input>
         </el-form-item>
-        <el-form-item label="游戏类型名称">
+        <el-form-item label="游戏类型名称" prop="typeName">
           <el-input v-model="gametype.typeName" placeholder="游戏类型名称"></el-input>
         </el-form-item>
       </el-form>
@@ -67,7 +67,12 @@ export default {
       gameTypeList:[],
       gametype:{typeId:'',typeName:''},
       dialogVisible:false,
-      typeName: ''
+      typeName: '',
+      rules: {
+        typeName: [
+          { required: true, message: '请输入游戏类型名称', trigger: 'blur' },
+        ],
+      }
     }
   },
   methods:{
@@ -107,22 +112,34 @@ export default {
       })
     },
     handleEdit(){
-      this.$axios.post('http://localhost:8090/gametype/editGameType',this.gametype).then(res=>{
-        if(res.data.code==200){
-          console.log(this.gametype)
-          this.dialogVisible=false;
-          this.findAllGameType();
+      this.$refs["gametypeForm"].validate((valid) => {
+        if (valid) {
+          this.$axios.post('http://localhost:8090/gametype/editGameType',this.gametype).then(res=>{
+            if(res.data.code==200){
+              console.log(this.gametype)
+              this.dialogVisible=false;
+              this.findAllGameType();
+              this.$message({
+                message:res.data.msg,
+                type:"success"
+              })
+            }else {
+              this.$message({
+                message:res.data.msg,
+                type:"warning"
+              })
+            }
+          }).catch(err=>{console.log(err)});
+        } else {
           this.$message({
-            message:res.data.msg,
-            type:"success"
+            message:"验证失败",
+            type:'warning'
           })
-        }else {
-          this.$message({
-            message:res.data.msg,
-            type:"warning"
-          })
+          console.log('error sumbit!!')
+          return false;
         }
-      }).catch(err=>{console.log(err)});
+      });
+
     },
     showAddDialog(){
       this.dialogVisible=true;

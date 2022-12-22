@@ -4,7 +4,7 @@
       <el-form-item label="游戏名称" >
         <el-input v-model="gameName" placeholder="请输入游戏名称"></el-input>
       </el-form-item>
-      <el-form-item label="游戏类型" prop="roleId">
+      <el-form-item label="游戏类型">
         <el-select v-model="gameTypeId" placeholder="游戏类型">
           <el-option
               v-for="gameType in gameTypeList"
@@ -48,6 +48,13 @@
             prop="gameIcon"
             show-overflow-tooltip
             width="400px">
+          <template slot-scope="scope">
+            <el-image :src="scope.row.gameIcon"
+                      fit="fill"
+                      style="width: 100px;height: 100px">
+
+            </el-image>
+          </template>
         </el-table-column>
         <el-table-column
             label="游戏名称"
@@ -82,11 +89,11 @@
         :visible.sync="dialogVisible"
         title="提示"
         width="30%">
-      <el-form label-width="80px">
-        <el-form-item label="游戏名称">
+      <el-form ref="gameForm" :model="game" :rules="rules" label-width="80px">
+        <el-form-item label="游戏名称" prop="gameName">
           <el-input v-model="game.gameName" placeholder="游戏名称"></el-input>
         </el-form-item>
-        <el-form-item label="游戏类型" prop="roleId">
+        <el-form-item label="游戏类型" prop="gameTypeId">
           <el-select v-model="game.gameTypeId" placeholder="游戏类型">
             <el-option
                 v-for="gameType in gameTypeList"
@@ -132,7 +139,15 @@ export default {
       gameTypeId:'',
       game:{gameName:'',gameTypeId:'',gameIcon:''},
       dialogVisible:false,
-      imageUrl:''
+      imageUrl:'',
+      rules: {
+        gameName: [
+          { required: true, message: '请输入游戏名称', trigger: 'blur' },
+        ],
+        gameTypeId: [
+          { required: true, message: '请输入游戏类别', trigger: 'blur' }
+        ],
+      }
     }
   },
   methods: {
@@ -155,7 +170,7 @@ export default {
       }).catch(err=>console.log(err));
     },
     delGameByIds(){
-      this.$confirm("您确定要删除此游戏信息吗?","提示",{
+      this.$confirm("您确定要删除选中游戏信息吗?","提示",{
         confirmButtonText:"确定",
         cancelButtonText:"取消",
         type:'warning'
@@ -213,22 +228,34 @@ export default {
       })
     },
     handleEdit(){
-      this.$axios.post('http://localhost:8090/game/editGame',this.game).then(res=>{
-        if(res.data.code==200){
-          console.log(this.game)
-          this.dialogVisible=false;
-          this.findAllGame();
+      this.$refs["gameForm"].validate((valid) => {
+        if (valid) {
+          this.$axios.post('http://localhost:8090/game/editGame',this.game).then(res=>{
+            if(res.data.code==200){
+              console.log(this.game)
+              this.dialogVisible=false;
+              this.findAllGame();
+              this.$message({
+                message:res.data.msg,
+                type:"success"
+              })
+            }else {
+              this.$message({
+                message:res.data.msg,
+                type:"warning"
+              })
+            }
+          }).catch(err=>{console.log(err)});
+        } else {
           this.$message({
-            message:res.data.msg,
-            type:"success"
+            message:"验证失败",
+            type:'warning'
           })
-        }else {
-          this.$message({
-            message:res.data.msg,
-            type:"warning"
-          })
+          console.log('error sumbit!!')
+          return false;
         }
-      }).catch(err=>{console.log(err)});
+      });
+
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);

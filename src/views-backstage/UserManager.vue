@@ -370,7 +370,10 @@ export default {
             }
           }).catch(err=>{console.log(err)});
         } else {
-          alert("验证失败")
+          this.$message({
+            message:"验证失败",
+            type:'warning'
+          })
           console.log('error sumbit!!')
           return false;
         }

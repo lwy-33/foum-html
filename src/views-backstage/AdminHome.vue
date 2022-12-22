@@ -32,11 +32,11 @@
 <!--                <li><el-link type="primary"><i class="el-icon-user-solid"></i>:admin</el-link></li>-->
                 <li><el-dropdown>
                   <span class="el-dropdown-link">
-                    <i class="el-icon-user-solid"></i>  admin<i class="el-icon-arrow-down el-icon--right"></i>
+                    <i class="el-icon-user-solid"></i>{{username}}<i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
-                    <el-dropdown-item>修改密码</el-dropdown-item>
+                    <el-dropdown-item @click.native="$router.push('/personCenter')">个人中心</el-dropdown-item >
+                    <el-dropdown-item @click.native="$router.push('modifyPassword')">修改密码</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
                 </li>
@@ -68,7 +68,7 @@
             </el-submenu>
             <el-submenu index="4">
               <template slot="title"><i class="el-icon-document"></i>帖子管理</template>
-              <el-menu-item index="4-1">帖子管理</el-menu-item>
+              <el-menu-item index="/titleManager">帖子管理</el-menu-item>
               <el-menu-item index="4-2">最新帖子</el-menu-item>
               <el-menu-item index="4-3">最热帖子</el-menu-item>
             </el-submenu>
@@ -101,7 +101,10 @@ export default {
   data() {
     return {
       activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex2: '1',
+      return:{
+        username:''
+      }
     };
   },
   methods: {
@@ -115,10 +118,16 @@ export default {
     goReception(){
       this.$router.push({name:'Home'})
     },
+    goPersonCenter(){
+      this.$router.push({name:'PersonCenter'})
+    },
     menuItemClick(index){
       this.$router.push(index);
     }
   },
+  created() {
+    this.username=window.localStorage.getItem("username")
+  }
 }
 </script>
 

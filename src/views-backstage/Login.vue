@@ -6,10 +6,10 @@
         <el-button @click="toRegister">点我注册</el-button>
       </h3>
       <el-form-item>
-        <el-input v-model="Loginform.username" autocomplete="off" placeholder="用户名" type="username"></el-input>
+        <el-input v-model="user.username" autocomplete="off" placeholder="用户名" type="username"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="Loginform.password" autocomplete="off" placeholder="密码" type="password"></el-input>
+        <el-input v-model="user.password" autocomplete="off" placeholder="密码" type="password"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button style="width:48%;border: none;float: left" type="primary" @click="Login">登录</el-button>
@@ -26,6 +26,10 @@ export default {
   name: "Login",
   data() {
     return {
+      user:{
+        username: '',
+        password: ''
+      },
       Loginform: {
         username: '',
         password: '',
@@ -37,22 +41,24 @@ export default {
       this.$router.push({path:'/Register'})
     },
     Login(){
-      this.$axios.post('http://localhost:8090/user/PasswordVerification',this.Loginform).then(res=>{
+      this.$axios.post('http://localhost:8090/user/PasswordVerification',this.user).then(res=>{
         this.Loginform=res.data.dataobject;
         // alert(this.Loginform.password=='0')
         // console.log(this.Loginform)
 
         if(res.data.code==200){
           console.log(this.Loginform)
+          window.localStorage.setItem("token",res.data.token)
           window.localStorage.setItem("userId",this.Loginform.userId);
-          window.localStorage.setItem("token",res.data.token);
           window.localStorage.setItem("nickname",this.Loginform.nickname);
           window.localStorage.setItem("userImage",this.Loginform.userImage);
           window.localStorage.setItem("personal",this.Loginform.personal);
+          window.localStorage.setItem("username",this.Loginform.username);
+
           if(this.Loginform.roleId>2){
             this.$router.push({name:'Home'})
             this.$message({
-              message:"登陆成功!",
+              message:res.data.msg,
               type:'success'
             })
           }else{
@@ -64,14 +70,19 @@ export default {
           }
 
 
-        }else{ if(res.data.code==300) {
+        }else{
+          // if(res.data.code==300) {
+          //   this.$message({
+          //     message: res.data.msg,
+          //     type: 'success'
+          //   })
+          //
+          //   window.location.reload();
+          // }
           this.$message({
-            message: "密码错误!",
-            type: 'success'
+            message: res.data.msg,
+            type: 'warning'
           })
-
-          window.location.reload();
-        }
         }
 
       }).catch(err=>{
@@ -83,6 +94,9 @@ export default {
       this.Loginform.username=''
       this.Loginform.password=''
     }
+  },
+  created() {
+
   }
 }
 </script>

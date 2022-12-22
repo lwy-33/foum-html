@@ -6,10 +6,14 @@ import Register from "@/views-backstage/Register";
 import AdminHome from "@/views-backstage/AdminHome";
 import UserManager from "@/views-backstage/UserManager";
 import AdminManager from "@/views-backstage/AdminManager";
-import AddUser from "@/views-backstage/AddUser";
+import AddUser from "@/views-backstage/ModifyPassword";
 import Test from "@/VueComponent/thumsVue";
-import Game from "@/views-backstage/Game";
+import gameType from "@/views-backstage from "@/views-backstage/Game";e/GameType";
 import GameType from "@/views-backstage/GameType";
+import Game from "@/views-backstage/Game";
+import PersonCenter from "@/views-backstage/PersonCenter";
+import TitleManager from "@/views-backstage/TitleManager";
+import ModifyPassword from "@/views-backstage/ModifyPassword";
 
 Vue.use(VueRouter)
 
@@ -58,16 +62,6 @@ const routes = [
         path: '/addUser',
         name: 'AddUser',
         component: AddUser
-      },
-      {
-        path: '/game',
-        name: 'Game',
-        component: Game
-      },
-      {
-        path: '/gameType',
-        name: 'GameType',
-        component: GameType
       }
     ]
 
