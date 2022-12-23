@@ -9,7 +9,8 @@
           <div style="height: 200px ;margin: auto" class="">
             <!--        头像用户名简介-->
             <!--            <img class="circleImg" src="D:\userImage\userImage\1.png">-->
-            <img class="circleImg" :src="require('D://userImage//userImage//'+user.userImage+'.png')" alt="">
+<!--            <img class="circleImg" :src="require('D://userImage//userImage//'+user.userImage+'.png')" alt="">-->
+            <el-image :src="user.userImage" class="circleImg" fit="fill"></el-image>
             <h2>{{ user.nickname }}</h2>
             <p>{{ user.personal }}</p>
           </div>
@@ -60,7 +61,8 @@
                 </el-badge>
               </el-col>
               <el-col :span="3"><div class="grid-content bg-purple"  style="float: right;">
-                <img class="circleImg1" :src="require('D://userImage//userImage//'+user.userImage+'.png')" alt="">
+<!--                <img class="circleImg1" :src="require('D://userImage//userImage//'+user.userImage+'.png')" alt="">-->
+                <el-image :src="user.userImage" class="circleImg" fit="fill"></el-image>
                 <el-dropdown style="">
                   <span class="el-dropdown-link" style="font-size: 30px">
                    {{nickname}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -92,7 +94,9 @@
                         <el-col :span="6"><div  class="grid-content bg-purple" style="height: 80px">
                           <i @click="titleOnEnterTd(index)">
                             <!--                          帖子用户头像-->
-                            <img class="circleImg1" :src="require('D://userImage//userImage//'+p.user.userImage+'.png')" alt=""></i>
+<!--                            <img class="circleImg1" :src="require('D://userImage//userImage//'+p.user.userImage+'.png')" alt="">-->
+                            <el-image :src="p.user.userImage" class="circleImg" fit="fill"></el-image>
+                          </i>
                             <a v-show="p.whetherToPayAttention" style="margin-bottom: 0px"><img style="margin-bottom: -9px;border-radius: 5px;
                               width: 20px;height: 20px;margin-left: -30px;" src="./../images/+.png" ></a>
                             <p style="margin-bottom: 0px">{{p.user.nickname}}</p>
@@ -158,7 +162,8 @@
                   <div v-for="recommendedUser in recommendedUsers" class="d_div">
                     <!--                  推荐用户-->
                     <div style="float: left;" >
-                      <a><img class="circleImg1" :src="require('D://userImage//userImage//'+recommendedUser.userImage+'.png')" alt=""></a>
+<!--                      <a><img class="circleImg1" :src="require('D://userImage//userImage//'+recommendedUser.userImage+'.png')" alt=""></a>-->
+                      <el-image :src="recommendedUser.userImage" class="circleImg" fit="fill"></el-image>
                       <!--                      跳转用户该用户-->
                     </div>
                     <div>

@@ -16,7 +16,7 @@
             </el-col>
             <el-col :span="12">
               <ul class="_ul">
-                <li><el-link type="primary"><i class="el-icon-s-home"></i>首页</el-link></li>
+                <li><el-link type="primary" @click="$router.push('/adminHome')"><i class="el-icon-s-home"></i>首页</el-link></li>
                 <li>
                   <el-link type="primary">
                     <el-badge :value="10" class="el-icon-message">
@@ -77,12 +77,12 @@
               <el-menu-item index="5-1">评论管理</el-menu-item>
               <el-menu-item index="5-2">评论统计</el-menu-item>
             </el-submenu>
-            <el-submenu index="6">
-              <template slot="title"><i class="el-icon-message-solid"></i>通知管理</template>
-              <el-menu-item index="6-1">通知管理</el-menu-item>
-              <el-menu-item index="6-2">发布通知</el-menu-item>
-            </el-submenu>
-            <el-menu-item><i class="el-icon-star-on"></i>收藏夹</el-menu-item>
+<!--            <el-submenu index="6">-->
+<!--              <template slot="title"><i class="el-icon-message-solid"></i>通知管理</template>-->
+<!--              <el-menu-item index="6-1">通知管理</el-menu-item>-->
+<!--              <el-menu-item index="6-2">发布通知</el-menu-item>-->
+<!--            </el-submenu>-->
+<!--            <el-menu-item><i class="el-icon-star-on"></i>收藏夹</el-menu-item>-->
           </el-menu>
         </el-aside>
         <el-main>

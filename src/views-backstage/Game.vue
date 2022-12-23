@@ -25,19 +25,15 @@
           ref="multipleTable"
           :cell-style="rowStyle"
           :data="gameList"
-          :header-cell-style="headStyle"
+          height="600"
           style="width: 100%"
+          :header-cell-style="headStyle"
           tooltip-effect="dark"
           @selection-change="handleSelectionChange">
         <el-table-column
             type="selection"
             width="55">
         </el-table-column>
-<!--        <el-table-column-->
-<!--            label="日期"-->
-<!--            width="120">-->
-<!--          <template slot-scope="scope">{{ scope.row.date }}</template>-->
-<!--        </el-table-column>-->
         <el-table-column
             label="游戏编号"
             prop="gameId"
@@ -103,19 +99,28 @@
           </el-select>
         </el-form-item>
         <el-row>
-          <el-col :span="6">
-            <p style="margin-left: 12px;margin-top: 100px">游戏图标</p>
-          </el-col>
-          <el-col :span="17">
-            <el-upload
-                :before-upload="beforeAvatarUpload"
-                :on-success="handleAvatarSuccess"
-                :show-file-list="false"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                class="avatar-uploader">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+<!--          <el-col :span="6">-->
+<!--            <p style="margin-left: 12px;margin-top: 100px">游戏图标</p>-->
+<!--          </el-col>-->
+          <el-col :span="24">
+            <el-form-item label="游戏图标" prop="gameIcon">
+              <el-upload
+                  :on-success="handleAvatarSuccess"
+                  :show-file-list="false"
+                  action="http://localhost:8090/uploadFile"
+                  class="avatar-uploader">
+                <img v-if="game.gameIcon" :src="game.gameIcon" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+<!--              <el-upload-->
+<!--                  ref="upload"-->
+<!--                  :on-success="afterFileUpload"-->
+<!--                  action="http://localhost:8090/uploadFile"-->
+<!--                  >-->
+<!--                <el-button size="small" type="primary">点击上传</el-button>-->
+
+<!--              </el-upload>-->
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -123,6 +128,7 @@
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleEdit">确 定</el-button>
       </span>
+      {{game}}
     </el-dialog>
     {{this.multipleSelection}}
   </div>
@@ -257,8 +263,8 @@ export default {
       });
 
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleAvatarSuccess(response) {
+      this.game.gameIcon=response.dataobject
     },
     beforeAvatarUpload(file) {
       const isPNG = file.type === 'image/png';
@@ -274,11 +280,21 @@ export default {
     },
     showAddDialog(){
       this.dialogVisible=true;
-      this.game={}
+      this.game={};
+      this.$nextTick(()=>{
+        if(this.$refs['upload']){
+          this.$refs['upload'].clearFiles()
+        }
+      });
     },
     showEditDialog(index,row){
       this.dialogVisible=true;
       Object.assign(this.game,row)
+      this.$nextTick(()=>{
+        if(this.$refs['upload']){
+          this.$refs['upload'].clearFiles()
+        }
+      });
     },
     Reset(){
       this.gameName=''

@@ -17,17 +17,17 @@
             prop="userImage"
             width="110">
           <template slot-scope="scope" >
-            <!--          <span v-for="(item2,index2) in scope.row.userImage" >-->
-            <el-popover
-                placement="right"
-                trigger="click"
-                width="400">
-              <!--            <img  :src="src" width="400px" height="400px"/><br>-->
-              <img slot="reference" :src="src+scope.row.userImage+hz" height="100px" style="border-radius: 100%" width="100px" >
-            </el-popover>
-            <!--            require('D://userImage//userImage//'+item2+'.png')-->
-            <!--    这个是实现点击图片放大功能的代码-->
-            <!--          </span>-->
+            <el-image :src="scope.row.userImage"
+                      fit="fill"
+                      style="width: 100px;height: 100px">
+
+            </el-image>
+<!--            <el-popover-->
+<!--                placement="right"-->
+<!--                trigger="click"-->
+<!--                width="400">-->
+<!--              <img slot="reference" :src="src+scope.row.userImage+hz" height="100px" style="border-radius: 100%" width="100px" >-->
+<!--            </el-popover>-->
           </template>
         </el-table-column>
         <el-table-column
@@ -170,12 +170,11 @@
           </el-col>
           <el-col :span="20">
             <el-upload
-                :before-upload="beforeAvatarUpload"
                 :on-success="handleAvatarSuccess"
                 :show-file-list="false"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="http://localhost:8090/uploadFile1"
                 class="avatar-uploader">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <img v-if="user.userImage" :src="user.userImage" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-col>
@@ -356,13 +355,23 @@ export default {
     showAddDialog() {
       this.dialogVisible=true
       this.user={}
+      this.$nextTick(()=>{
+        if(this.$refs['upload']){
+          this.$refs['upload'].clearFiles()
+        }
+      });
     },
     showEditDialog(index,row){
       this.dialogVisible=true;
       Object.assign(this.user,row)
+      this.$nextTick(()=>{
+        if(this.$refs['upload']){
+          this.$refs['upload'].clearFiles()
+        }
+      });
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    handleAvatarSuccess(response) {
+      this.user.userImage=response.dataobject
     },
     beforeAvatarUpload(file) {
       const isPNG = file.type === 'image/png';

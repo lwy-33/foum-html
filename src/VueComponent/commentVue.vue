@@ -24,7 +24,8 @@
           <el-row :gutter="24">
             <el-col :span="3">
               <div class="circleImg1" style="">
-                <i><img class="circleImg1" :src="require('D://userImage//userImage//'+comment.by3+'.png')" alt=""></i>
+<!--                <i><img class="circleImg1" :src="require('D://userImage//userImage//'+comment.by3+'.png')" alt=""></i>-->
+                <el-image :src="comment.by3" class="circleImg1" fit="fill"></el-image>
               </div>
             </el-col>
             <el-col :span="8">

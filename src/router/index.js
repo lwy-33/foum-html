@@ -6,9 +6,7 @@ import Register from "@/views-backstage/Register";
 import AdminHome from "@/views-backstage/AdminHome";
 import UserManager from "@/views-backstage/UserManager";
 import AdminManager from "@/views-backstage/AdminManager";
-import AddUser from "@/views-backstage/ModifyPassword";
 import Test from "@/VueComponent/thumsVue";
-import gameType from "@/views-backstage from "@/views-backstage/Game";e/GameType";
 import GameType from "@/views-backstage/GameType";
 import Game from "@/views-backstage/Game";
 import PersonCenter from "@/views-backstage/PersonCenter";
@@ -59,10 +57,31 @@ const routes = [
         component: AdminManager
       },
       {
-        path: '/addUser',
-        name: 'AddUser',
-        component: AddUser
+        path: '/modifyPassword',
+        name: 'ModifyPassword',
+        component: ModifyPassword
+      },
+      {
+        path: '/gameType',
+        name: 'GameType',
+        component: GameType
+      },
+      {
+        path: '/game',
+        name: 'Game',
+        component: Game
+      },
+      {
+        path: '/personCenter',
+        name: 'PersonCenter',
+        component: PersonCenter
+      },
+      {
+        path: '/titleManager',
+        name: 'TitleManager',
+        component: TitleManager
       }
+
     ]
 
   }

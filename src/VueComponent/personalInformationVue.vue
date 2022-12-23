@@ -2,7 +2,8 @@
 <!--浮动个人信息-->
   <div class="app"><el-row :gutter="20">
     <el-col :span="12"><div class="grid-content bg-purple">
-      <img style="width: 80px;height: 80px" class="circleImg1" :src="require('D://userImage//userImage//'+user.userImage+'.png')" alt="">
+<!--      <img style="width: 80px;height: 80px" class="circleImg1" :src="require('D://userImage//userImage//'+user.userImage+'.png')" alt="">-->
+      <el-image :src="user.userImage" class="circleImg1" fit="fill"></el-image>
       <p style="margin-left: 10px; font-weight: bold; font-family: '楷体';font-size: 12px">{{user.nickname}}</p>
     </div></el-col>
     <el-col :span="12"><div class="grid-content bg-purple">
